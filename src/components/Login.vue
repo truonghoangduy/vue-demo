@@ -3,6 +3,7 @@
     <div>
       <img alt="Vue logo" src="../assets/logo.png" />
     </div>
+    <Test />
     <div>
       <HelloWorld msg="Welcome to Vue.js Chat App" />
     </div>
@@ -13,19 +14,28 @@
 </template>
 
 <script>
-import { authLogin, authprovider } from "../db.js";
+import { authLogin, authprovider,db,serverTime } from "../db.js";
 import HelloWorld from "./HelloWorld.vue";
 // import router from "../main.js"
+import Test from './Test.vue'
 
 export default {
   name: "Login",
   components: {
-    HelloWorld
+    HelloWorld,
+    Test
   },
 
   methods: {
     async login() {
       let user = await authLogin.signInWithPopup(authprovider);
+      let currentUserAdd = { // temper JSON to firebase
+        id:authLogin.currentUser.email, // As email to :))
+        imageUrl:authLogin.currentUser.photoURL,
+        name:authLogin.currentUser.displayName,
+        serverTime
+      }
+      await db.collection("user").doc(currentUserAdd['id']).set(currentUserAdd)
       if (user.credential != null) {
         this.$store.commit("setAuthentication", true);
         this.$router.replace({ name: "dashboard" });

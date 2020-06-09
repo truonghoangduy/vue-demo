@@ -130,7 +130,9 @@ export default {
   /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
-
+.grid-element:hover {
+  background-color: aliceblue;
+}
 .grid-element {
   /* background-color: deepPink; */
   padding: 20px;

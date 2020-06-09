@@ -20,8 +20,7 @@
         </div>
         <img
           src="../assets/kittycat.gif"
-          alt
-          srcset
+          loop=infinite
           
         />
         <div class="testing">
@@ -134,6 +133,9 @@ export default {
   padding: 20px;
   color: #fff;
   border: 1px solid #fff;
+}
+.grid-element:hover {
+  background-color: aliceblue;
 }
 .grid-element img {
   max-width: 5vw;

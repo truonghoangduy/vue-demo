@@ -16,14 +16,11 @@
 <script>
 import { authLogin, authprovider,db,serverTime } from "../db.js";
 import HelloWorld from "./HelloWorld.vue";
-// import router from "../main.js"
-import Test from './Test.vue'
 
 export default {
   name: "Login",
   components: {
     HelloWorld,
-    Test
   },
 
   methods: {

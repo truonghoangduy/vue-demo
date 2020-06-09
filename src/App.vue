@@ -26,4 +26,9 @@ export default {
   color: #2c3e50;
   /* margin-top: 60px; */
 }
+.sc-header img{
+  max-width: 50px;
+  max-height: 50px;
+
+}
 </style>

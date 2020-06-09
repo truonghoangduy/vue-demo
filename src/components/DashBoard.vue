@@ -1,10 +1,23 @@
 <template>
   <div>
     <!-- <div v-for="info in basicInfo " :key="info.message"></div> -->
-    <div class="userNav">
+    <!-- <div class="userNav">
       <div v-for="user in listOfAvaUser" :key="user.id" class="card">
         <img :src="user.imageUrl" class="avatarIcon" @click="chatTo(user)" />
         <h3>{{user.name}}</h3>
+      </div>
+    </div> -->
+    <div class="beuti-text" style="font-weight:1000;font-size:30px">
+      👉 {{listOfAvaUser.length}} are online  🧑‍🚀  
+    </div>
+    <div>
+      <div class="grid-container grid-container--fill">
+        <div class="grid-element" v-for="user in listOfAvaUser" :key="user.id">
+          <div>
+             <img :src="user.imageUrl" class="avatarIcon" @click="chatTo(user)" />
+            <h4 style="color: black;" class="beuti-text">{{user.name}}</h4>
+          </div>
+        </div>
       </div>
     </div>
     <!-- <div> -->
@@ -29,7 +42,7 @@ export default {
       choosenPerson: "",
       clickSOMEOnceToChat: false,
       listOfAvaUser: [],
-      clickToChat: false,
+      clickToChat: false
     };
     //   basicInfo:[]
   },
@@ -38,11 +51,14 @@ export default {
     this.listAvaUser();
   },
   methods: {
-    onlineStatus(){
-      setInterval(async ()=>{
-              await db.collection("user").doc(authLogin.currentUser.email).update({serverTime})
-
-      },5000)
+    onlineStatus() {
+      setInterval(async () => {
+        
+        await db
+          .collection("user")
+          .doc(authLogin.currentUser.email)
+          .update({ serverTime });
+      }, 5000);
     },
     async checkRoom() {
       this.clickSOMEOnceToChat = false;
@@ -72,17 +88,19 @@ export default {
       this.clickSOMEOnceToChat = true;
     },
     listAvaUser() {
-      db.collection("user").orderBy("serverTime", "desc").onSnapshot(data => {
-        let temperListofAvaUser = [];
-        data.docs.forEach(doc => {
-          if (doc.data().id != authLogin.currentUser.email) {
-            temperListofAvaUser.push(doc.data());
-          }
-          // this.listOfAvaUser = temperListofAvaUser.sort((a,b)=>b.serverTime.seconds - a.serverTime.seconds);
+      db.collection("user")
+        .orderBy("serverTime", "desc")
+        .onSnapshot(data => {
+          let temperListofAvaUser = [];
+          data.docs.forEach(doc => {
+            if (doc.data().id != authLogin.currentUser.email) {
+              temperListofAvaUser.push(doc.data());
+            }
+            // this.listOfAvaUser = temperListofAvaUser.sort((a,b)=>b.serverTime.seconds - a.serverTime.seconds);
 
-          this.listOfAvaUser = temperListofAvaUser;
+            this.listOfAvaUser = temperListofAvaUser;
+          });
         });
-      });
     }
   }
 };
@@ -103,4 +121,32 @@ export default {
   width: 12vw;
   height: 12vw;
 }
+
+.grid-container {
+  display: grid;
+}
+
+.grid-container--fill {
+  /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.grid-element {
+  /* background-color: deepPink; */
+  padding: 20px;
+  color: #fff;
+  border: 1px solid #fff;
+}
+.grid-element img {
+  max-width: 5vw;
+  max-height: 5vw;
+}
+.beuti-text {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 </style>

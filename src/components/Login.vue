@@ -22,6 +22,7 @@
           src="../assets/kittycat.gif"
           alt
           srcset
+          
         />
         <div class="testing">
           <div class="grid-container grid-container--fill">
@@ -125,7 +126,7 @@ export default {
 
 .grid-container--fill {
   /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .grid-element {

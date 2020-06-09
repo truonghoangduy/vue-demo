@@ -6,15 +6,16 @@
         <img :src="user.imageUrl" class="avatarIcon" @click="chatTo(user)" />
         <h3>{{user.name}}</h3>
       </div>
-    </div> -->
-    <div class="beuti-text" style="font-weight:1000;font-size:30px">
-      👉 {{listOfAvaUser.length}} are online  🧑‍🚀  
-    </div>
+    </div>-->
+    <div
+      class="beuti-text"
+      style="font-weight:1000;font-size:30px"
+    >👉 {{listOfAvaUser.length}} are online 🧑‍🚀</div>
     <div>
       <div class="grid-container grid-container--fill">
         <div class="grid-element" v-for="user in listOfAvaUser" :key="user.id">
           <div>
-             <img :src="user.imageUrl" class="avatarIcon" @click="chatTo(user)" />
+            <img :src="user.imageUrl" class="avatarIcon" @click="chatTo(user)" />
             <h4 style="color: black;" class="beuti-text">{{user.name}}</h4>
           </div>
         </div>
@@ -29,6 +30,8 @@
 
 <script>
 import { db, serverTime } from "../db.js";
+import firebase from 'firebase/app'
+
 import { authLogin } from "../db.js";
 import Messeger from "./Messeger.vue";
 export default {
@@ -53,7 +56,6 @@ export default {
   methods: {
     onlineStatus() {
       setInterval(async () => {
-        
         await db
           .collection("user")
           .doc(authLogin.currentUser.email)
@@ -87,20 +89,44 @@ export default {
       await this.checkRoom();
       this.clickSOMEOnceToChat = true;
     },
+    diff_secs(dt1) {
+      let todayTime = new Date();
+      var diff = (todayTime.getTime() - dt1.getTime()) / 1000;
+      // diff /= 60;
+      return Math.abs(Math.round(diff));
+    },
+
     listAvaUser() {
       db.collection("user")
-        .orderBy("serverTime", "desc")
+        // .orderBy("serverTime", "desc")
         .onSnapshot(data => {
+          console.log("Tick");
           let temperListofAvaUser = [];
-          data.docs.forEach(doc => {
-            if (doc.data().id != authLogin.currentUser.email) {
-              temperListofAvaUser.push(doc.data());
-            }
-            // this.listOfAvaUser = temperListofAvaUser.sort((a,b)=>b.serverTime.seconds - a.serverTime.seconds);
-
-            this.listOfAvaUser = temperListofAvaUser;
-          });
-        });
+            data.docs.forEach(doc => {
+              if (doc.data().id != authLogin.currentUser.email) {
+                temperListofAvaUser.push(
+                  doc.data({ serverTimestamps: "estimate" })
+                );
+              }
+          }),
+           this.listOfAvaUser = temperListofAvaUser.filter(vaule => {
+              if (vaule.serverTime.seconds != null || vaule.serverTime.seconds!= undefined) {
+                let convert = new firebase.firestore.Timestamp(vaule.serverTime.seconds,vaule.serverTime.nanoseconds)
+                let timeOn = this.diff_secs(convert.toDate()
+                );
+                console.log({
+                  "name":vaule.id,
+                  "time":timeOn});
+                if (timeOn < 400) {
+                  return true;
+                }
+                return false;
+              }
+              return false;
+            });
+          
+        }
+      );
     }
   }
 };
@@ -150,5 +176,4 @@ export default {
   text-align: center;
   text-transform: uppercase;
 }
-
 </style>

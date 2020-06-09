@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import {Timestamp } from 'firebase'
 // Get a Firestore instance
 const init = firebase
   .initializeApp({
@@ -13,7 +14,7 @@ const init = firebase
     appId: "1:713117846149:web:5f384bf84cac176d3777ec"});
     
 export const authprovider = new firebase.auth.GoogleAuthProvider();
-
+export const firestoretimestamp = Timestamp;
 export const db = init.firestore();
 export const serverTime = firebase.firestore.FieldValue.serverTimestamp();
 export const authLogin = init.auth();

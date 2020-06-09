@@ -3,11 +3,17 @@ import App from './App.vue'
 import { firestorePlugin } from 'vuefire'
 import VueRouter from 'vue-router'
 import Vuex from "vuex"
+
 // Routing
 import Login from './components/Login.vue'
 import DashBoard from './components/DashBoard.vue'
+
+// Chat UI
+import Chat from 'vue-beautiful-chat'
+
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.use(Chat)
 Vue.use(firestorePlugin)
 const store = new Vuex.Store(
   {

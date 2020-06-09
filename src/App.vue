@@ -6,14 +6,11 @@
 
 <script>
 // import Messeger from './components/Messeger.vue'
-// import Login from './components/Login.vue'
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
-    // Messeger,
-    // Login
+    
   },
   
 

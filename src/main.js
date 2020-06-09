@@ -30,7 +30,6 @@ const store = new Vuex.Store(
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    // { path: '/hello', component: HellowWorld, name: "hello" },
     { path: '/', component: Login, name: "login" },
     {
       path: '/dashboard', component: DashBoard, name: 'dashboard',
@@ -38,7 +37,7 @@ const router = new VueRouter({
         if (store.state.authenticated == false) {
           next("/") // Login on the parma
         } else {
-          next();
+          next(); // Forward pass to dashboard
         }
       }
     }
